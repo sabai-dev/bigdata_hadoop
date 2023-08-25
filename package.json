@@ -1,0 +1,15 @@
+{
+  "name": "hadoop_mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "docker-compose -f docker-compose.yml up -d",
+    "stop": "docker-compose -f docker-compose.yml down || true",
+    "build": "docker build -f Dockerfile -t sabaicode/bigdata_hadoop:latest .",
+    "console": "docker-compose exec -u sabaicode app bash"
+  },
+  "author": "",
+  "license": "ISC"
+}

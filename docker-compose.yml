@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  hadoop:
+    image: sabaicode/bigdata_hadoop:latest
+    container_name: hadoop
+    ports:
+      - 8080:8080
+    volumes:
+      - ./hadoop-data:/opt/hadoop/data
+      - ./hadoop-logs:/opt/hadoop/logs
