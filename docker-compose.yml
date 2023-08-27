@@ -1,11 +1,33 @@
 version: '3'
 
 services:
-  hadoop:
-    image: sabaicode/bigdata_hadoop:latest
-    container_name: hadoop
+  namenode:
+    image: sabaicode/hadoop_namenode:latest
+    container_name: namenode
     ports:
-      - 8080:8080
+      - 50030:50030
+      - 8080:9870
+      - 9000:9000
     volumes:
-      - ./hadoop-data:/opt/hadoop/data
+      - ./hadoop-data:/opt/hadoop/data/datanode
+      - ./hadoop-logs:/opt/hadoop/logs
+
+  datanode1:
+    image: sabaicode/hadoop_datanode:latest
+    container_name: datanode1
+    links:
+      - namenode
+    # ports:
+    #   - 50070:50070
+    volumes:
+      - ./hadoop-data:/opt/hadoop/data/datanode
+      - ./hadoop-logs:/opt/hadoop/logs
+
+  datanode2:
+    image: sabaicode/hadoop_datanode:latest
+    container_name: datanode2
+    links:
+      - namenode
+    volumes:
+      - ./hadoop-data:/opt/hadoop/data/datanode
       - ./hadoop-logs:/opt/hadoop/logs
