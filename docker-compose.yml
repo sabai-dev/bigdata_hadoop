@@ -4,30 +4,56 @@ services:
   namenode:
     image: sabaicode/hadoop_namenode:latest
     container_name: namenode
+    restart: always
     ports:
-      - 50030:50030
-      - 8080:9870
-      - 9000:9000
+      - 9870:9870
+    # environment:
+    #   - HADOOP_NAMENODE_HTTP_ADDRESS=namenode:9870
     volumes:
-      - ./hadoop-data:/opt/hadoop/data/datanode
-      - ./hadoop-logs:/opt/hadoop/logs
+      - hadoop_namenode:/opt/hadoop/data/datanode
+      - ./hadoop_logs:/opt/hadoop/logs
+      - ./config/namenode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/namenode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    networks:
+      - bigdata_hadoop
 
   datanode1:
     image: sabaicode/hadoop_datanode:latest
     container_name: datanode1
     links:
       - namenode
-    # ports:
-    #   - 50070:50070
+    restart: always
+    networks:
+      - bigdata_hadoop
     volumes:
-      - ./hadoop-data:/opt/hadoop/data/datanode
-      - ./hadoop-logs:/opt/hadoop/logs
+      - hadoop_namenode:/opt/hadoop/data/datanode
+      - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    ports:
+      - '9864:9864'
+  # environment:
+  #   - HADOOP_DATANODE_HTTP_ADDRESS=datanode1:9864
 
-  datanode2:
-    image: sabaicode/hadoop_datanode:latest
-    container_name: datanode2
-    links:
-      - namenode
-    volumes:
-      - ./hadoop-data:/opt/hadoop/data/datanode
-      - ./hadoop-logs:/opt/hadoop/logs
+  # datanode2:
+  #   image: sabaicode/hadoop_datanode:latest
+  #   container_name: datanode2
+  #   links:
+  #     - namenode
+  #   restart: always
+  #   networks:
+  #     - bigdata_hadoop
+  #   volumes:
+  #     - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+  #     - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+
+  #   ports:
+  #     - '9865:9864'
+  #   environment:
+  #     - HADOOP_DATANODE_HTTP_ADDRESS=datanode2:9864
+
+volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+
+networks:
+  bigdata_hadoop:

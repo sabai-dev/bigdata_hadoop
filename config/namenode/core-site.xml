@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
+    
+    <property>
+        <name>hadoop.http.authentication.type</name>
+        <value>simple</value>
+    </property>    
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://namenode</value>
+        <value>hdfs://namenode:8020</value>
         <description>
             hdfs://host:port
             URI of namenode. need for datanodes to connect to namenode.

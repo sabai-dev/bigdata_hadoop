@@ -11,7 +11,7 @@
     "build:namenode": "docker build -f docker/namenode/Dockerfile -t sabaicode/hadoop_namenode:latest .",
     "build:datanode": "docker build -f docker/datanode/Dockerfile -t sabaicode/hadoop_datanode:latest .",
     "clear-container": "docker rm -f $(docker ps -a -q)",
-    "console": "docker-compose exec -u sabaicode hadoop bash"
+    "console": "docker-compose exec -u sabaicode namenode bash"
   },
   "author": "",
   "license": "ISC"

@@ -24,18 +24,16 @@ ENV HADOOP_HOME=/opt/hadoop
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
-COPY config/*.xml  $HADOOP_CONF_DIR/
-
 RUN addgroup --gid 1099 ${HADOOP_USER} && useradd -m -u 1099 -g ${HADOOP_USER} ${HADOOP_USER} \
-        && echo "${HADOOP_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-        
+    && echo "${HADOOP_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 RUN echo 'export HADOOP_MAPRED_HOME=${HADOOP_HOME}' >> ~/.bashrc && \
     echo 'export HADOOP_COMMON_HOME=${HADOOP_HOME}' >> ~/.bashrc && \
     echo 'export HADOOP_HDFS_HOME=${HADOOP_HOME}' >> ~/.bashrc && \
     echo 'export YARN_HOME=${HADOOP_HOME}' >> ~/.bashrc
 
 # Expose necessary ports
-# EXPOSE 9870 8080
+# EXPOSE 9870
 
 # Set working directory
 WORKDIR $HADOOP_HOME
