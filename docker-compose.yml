@@ -10,7 +10,8 @@ services:
     # environment:
     #   - HADOOP_NAMENODE_HTTP_ADDRESS=namenode:9870
     volumes:
-      - hadoop_namenode:/opt/hadoop/data/datanode
+      - ./docker:/dockers
+      - ./hadoop_namenode:/opt/hadoop/data/namenode
       - ./hadoop_logs:/opt/hadoop/logs
       - ./config/namenode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/namenode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
@@ -26,12 +27,14 @@ services:
     networks:
       - bigdata_hadoop
     volumes:
-      - hadoop_namenode:/opt/hadoop/data/datanode
+      - ./docker:/dockers
+      - ./hadoop_datanode:/opt/hadoop/data/datanode
       - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     ports:
       - '9864:9864'
-  # environment:
+    environment:
+      - SERVICE_PRECONDITION="namenode:9870"
   #   - HADOOP_DATANODE_HTTP_ADDRESS=datanode1:9864
 
   # datanode2:
@@ -51,9 +54,9 @@ services:
   #   environment:
   #     - HADOOP_DATANODE_HTTP_ADDRESS=datanode2:9864
 
-volumes:
-  hadoop_namenode:
-  hadoop_datanode:
+# volumes:
+#   hadoop_namenode:
+#   hadoop_datanode:
 
 networks:
   bigdata_hadoop:

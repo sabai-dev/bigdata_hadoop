@@ -3,15 +3,16 @@
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>3</value>
+        <value>1</value>
     </property>
    <property>
-      <name>dfs.namenode.data.dir</name>
+      <name>dfs.namenode.name.dir</name>
       <value>file:///opt/hadoop/data/namenode</value>
-   </property>
-   <property>
-      <name>dfs.datanode.data.dir</name>
-      <value>file:///opt/hadoop/data/datanode</value>
+      <description>
+        This directory is used to store the metadata of the HDFS filesystem.
+        The metadata includes information about the directory structure of HDFS, 
+        file-to-block mapping, and the transaction logs
+      </description>      
    </property>
     <property>
         <name>dfs.webhdfs.enabled</name>

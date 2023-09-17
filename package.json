@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "docker-compose -f docker-compose.yml up -d",
-    "stop": "docker-compose -f docker-compose.yml down || true",
+    "stop": "docker-compose -f docker-compose.yml down",
     "build:base": "docker build -f docker/base/Dockerfile -t sabaicode/hadoop_base:latest .",
     "build:namenode": "docker build -f docker/namenode/Dockerfile -t sabaicode/hadoop_namenode:latest .",
     "build:datanode": "docker build -f docker/datanode/Dockerfile -t sabaicode/hadoop_datanode:latest .",
