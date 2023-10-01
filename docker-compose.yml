@@ -6,11 +6,8 @@ services:
     container_name: namenode
     restart: always
     ports:
-      - 9870:9870
-    # environment:
-    #   - HADOOP_NAMENODE_HTTP_ADDRESS=namenode:9870
+      - 9870:9870  # Old hadoop use 50070
     volumes:
-      - ./docker:/dockers
       - ./hadoop_namenode:/opt/hadoop/data/namenode
       - ./hadoop_logs:/opt/hadoop/logs
       - ./config/namenode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
@@ -27,32 +24,71 @@ services:
     networks:
       - bigdata_hadoop
     volumes:
-      - ./docker:/dockers
-      - ./hadoop_datanode:/opt/hadoop/data/datanode
+      - ./hadoop_datanode/datanode1:/opt/hadoop/data/datanode
       - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     ports:
       - '9864:9864'
     environment:
       - SERVICE_PRECONDITION="namenode:9870"
-  #   - HADOOP_DATANODE_HTTP_ADDRESS=datanode1:9864
 
-  # datanode2:
-  #   image: sabaicode/hadoop_datanode:latest
-  #   container_name: datanode2
-  #   links:
-  #     - namenode
-  #   restart: always
-  #   networks:
-  #     - bigdata_hadoop
-  #   volumes:
-  #     - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-  #     - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+  datanode2:
+    image: sabaicode/hadoop_datanode:latest
+    container_name: datanode2
+    links:
+      - namenode
+    restart: always
+    networks:
+      - bigdata_hadoop
+    volumes:
+      - ./hadoop_datanode/datanode2:/opt/hadoop/data/datanode
+      - ./config/datanode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/datanode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    ports:
+      - '9865:9864'
+    environment:
+      - SERVICE_PRECONDITION="namenode:9870"
 
-  #   ports:
-  #     - '9865:9864'
-  #   environment:
-  #     - HADOOP_DATANODE_HTTP_ADDRESS=datanode2:9864
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: postgres
+    links:
+      - namenode
+    networks:
+      - bigdata_hadoop
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=my_database
+    ports:
+      - "5432:5432"
+
+  sqoop:
+    # build:
+    #   context: .
+    #   dockerfile: docker/sqoop/Dockerfile
+    image: sabaicode/hadoop_sqoop:latest
+    container_name: sqoop
+    links:
+      - namenode
+    networks:
+      - bigdata_hadoop
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - ./config/namenode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/namenode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    depends_on:
+      - namenode
+  flume:
+      image: sabaicode/hadoop_flume:latest
+      container_name: flume
+      links:
+        - namenode
+      restart: always
+      networks:
+        - bigdata_hadoop
+      volumes:
+        - ./config/flume/twitter.conf:/opt/flume/conf/twitter.conf
 
 # volumes:
 #   hadoop_namenode:

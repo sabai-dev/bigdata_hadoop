@@ -5,10 +5,10 @@
         <name>dfs.datanode.data.dir</name>
         <value>file:///opt/hadoop/data/datanode</value>
     </property>
-    <property>
+    <!-- <property>
         <name>dfs.datanode.hostname</name>
         <value>localhost</value>
-    </property>    
+    </property> -->
     <property>
         <name>dfs.datanode.http.address</name>
         <!-- <value>${HADOOP_DATANODE_HTTP_ADDRESS}</value> -->

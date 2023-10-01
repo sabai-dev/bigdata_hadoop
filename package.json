@@ -6,10 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "docker-compose -f docker-compose.yml up -d",
-    "stop": "docker-compose -f docker-compose.yml down",
+    "stop": "docker-compose -f docker-compose.yml down || true",
     "build:base": "docker build -f docker/base/Dockerfile -t sabaicode/hadoop_base:latest .",
     "build:namenode": "docker build -f docker/namenode/Dockerfile -t sabaicode/hadoop_namenode:latest .",
     "build:datanode": "docker build -f docker/datanode/Dockerfile -t sabaicode/hadoop_datanode:latest .",
+    "build:sqoop": "docker build -f docker/sqoop/Dockerfile -t sabaicode/hadoop_sqoop:latest .",
+    "build:flume": "docker build -f docker/flume/Dockerfile -t sabaicode/hadoop_flume:latest .",
     "clear-container": "docker rm -f $(docker ps -a -q)",
     "console": "docker-compose exec -u sabaicode namenode bash"
   },
