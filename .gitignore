@@ -1,13 +1,13 @@
 hadoop_logs/
 hadoop_datanode/
 hadoop_namenode/
+hadoop-logs/
 node_modules/
 packages/*/node_modules
 dist/
 
 # Compiled Java class files
 *.class
-
 # Compiled Python bytecode
 *.py[cod]
 

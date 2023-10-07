@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///home/mylabs/.vscode/extensions/atlassian.atlascode-3.0.6/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+        "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "file:///home/mylabs/projects/bigdata_hadoop/docker-compse_ha.yml"
+    }
+}

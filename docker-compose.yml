@@ -89,6 +89,7 @@ services:
         - bigdata_hadoop
       volumes:
         - ./config/flume/twitter.conf:/opt/flume/conf/twitter.conf
+        - ./config/flume/flume-env.sh:/opt/flume/conf/flume-env.sh
 
 # volumes:
 #   hadoop_namenode:
