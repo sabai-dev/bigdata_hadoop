@@ -22,16 +22,16 @@
         <name>dfs.webhdfs.user.provider.user.pattern</name>
         <value>^/user/([^/]+).*$</value>
     </property>
-    <property>
+    <!-- <property>
         <name>dfs.namenode.http-address</name>
         <value>0.0.0.0:9870</value>
         <description>how others should address or reach me.</description>
-    </property>
-    <property>
+    </property> -->
+    <!-- <property>
         <name>dfs.namenode.http-bind-host</name>
         <value>0.0.0.0</value>
         <description>where I, the NameNode, should listen for incoming</description>
-    </property>
+    </property> -->
     <!-- <property>
         <name>dfs.max.block.size</name>
         <value>524288000</value>
@@ -47,10 +47,74 @@
     </property>
     <property>
         <name>dfs.datanode.handler.count</name>
-        <value>2</value>
+        <value>3</value>
     </property>
     <property>
         <name>dfs.permissions</name>
         <value>false</value>
-    </property>    
+    </property>
+
+    <!-- NameNode Configuration for HA -->
+    <property>
+        <name>dfs.nameservices</name>
+        <value>sabai_cluster</value>
+    </property>
+    <property>
+        <name>dfs.ha.namenodes.sabai_cluster</name>
+        <value>nn1,nn2</value>
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address.sabai_cluster.nn1</name>
+        <value>namenode1:8020</value>
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address.sabai_cluster.nn2</name>
+        <value>namenode2:8020</value>
+    </property>
+   <property>
+     <name>dfs.namenode.http-address.sabai_cluster.nn1</name>
+     <value>namenode1:9870</value>
+   </property>
+   <property>
+     <name>dfs.namenode.http-address.sabai_cluster.nn2</name>
+     <value>namenode2:9870</value>
+   </property>
+    <!-- Configuring automatic failover with zookeeper -->
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>zookeeper1:2181,zookeeper2:2181,zookeeper3:2181</value>
+    </property>
+
+    <!-- This configuration property specifies the shared directory where the NameNodes store their edits. -->
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://journalnode1:8485;journalnode2:8485;journalnode3:8485/sabai_cluster</value>
+    </property>
+   <!--
+   <property>
+     <name>dfs.ha.fencing.methods</name>
+     <value>sshfence</value>
+   </property>
+   <property>
+     <name>dfs.ha.fencing.ssh.private-key-files</name>
+     <value>/home/hadoop/.ssh/id_dsa</value>
+   </property>
+   -->
+   <property>
+     <name>dfs.ha.fencing.methods</name>
+     <value>shell(/bin/true)</value>
+   </property>
+   <property>
+     <name>dfs.client.failover.proxy.provider.sabai_cluster</name>
+     <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+   </property>
+   <property>
+     <name>dfs.ha.automatic-failover.enabled</name>
+     <value>true</value>
+   </property>
+   
 </configuration>

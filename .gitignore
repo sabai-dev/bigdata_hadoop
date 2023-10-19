@@ -1,6 +1,6 @@
-hadoop_logs/
-hadoop_datanode/
-hadoop_namenode/
+hadoop_logs*/
+hadoop_datanode*/
+hadoop_namenode*/
 hadoop-logs/
 node_modules/
 packages/*/node_modules
