@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  # Manually start the zkfc daemon on each of the machines that runs a NameNode. 
+  # Manually start the zkfc daemon on each of the machines that runs a NameNode.
   # $hdfs start zkfc
   # hdfs zkfc -formatZK
-  
+
   namenode1:
     image: sabaicode/hadoop_namenode:latest
     container_name: namenode1
     # restart: always
     ports:
-      - 9870:9870  # Old hadoop use 50070
+      - 9870:9870 # Old hadoop use 50070
     volumes:
       - ./hadoop_namenode1:/opt/hadoop/data/namenode
       - ./hadoop_namenode1_logs:/opt/hadoop/logs
@@ -22,20 +22,21 @@ services:
     # $hdfs namenode -format
     # You should run this command only once. Running it on an already initialized shared edits directory may cause data loss.
     # $hdfs namenode -initializeSharedEdits
+    # Start first namenode it will set as default to standby
     # $hdfs --daemon start namenode
-    # Run on Active Namenode
+    # Run on Active Namenode to Starting DFSZKFailoverController( is is run when initailize HA)
     # $hdfs zkfc -formatZK
-    
-    # Run all namenode
+
+    # Run all namenode ZKFC (ZooKeeper Failover Controller) daemon
     # $hdfs --daemon start zkfc
     # command: ["hdfs", "--daemon", "start", "namenode"]
-    command: ["tail", "-f", "/dev/null"]
+    command: ['tail', '-f', '/dev/null']
 
   namenode2:
     image: sabaicode/hadoop_namenode:latest
     container_name: namenode2
     ports:
-      - 9871:9870  # Old hadoop use 50070
+      - 9871:9870 # Old hadoop use 50070
     volumes:
       - ./hadoop_namenode2:/opt/hadoop/data/namenode
       - ./config/namenode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
@@ -47,7 +48,7 @@ services:
     # Run every time namenode2 start
     # $hdfs --daemon start namenode
     # $hdfs --daemon start zkfc
-    command: ["tail", "-f", "/dev/null"]
+    command: ['tail', '-f', '/dev/null']
 
   journalnode1:
     image: sabaicode/hadoop_namenode:latest
@@ -57,7 +58,7 @@ services:
     volumes:
       - ./config/journalnode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/journalnode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-    command: ["hdfs", "journalnode"]
+    command: ['hdfs', 'journalnode']
 
   journalnode2:
     image: sabaicode/hadoop_namenode:latest
@@ -67,7 +68,7 @@ services:
     volumes:
       - ./config/journalnode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/journalnode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-    command: ["hdfs", "journalnode"]
+    command: ['hdfs', 'journalnode']
 
   journalnode3:
     image: sabaicode/hadoop_namenode:latest
@@ -77,40 +78,40 @@ services:
     volumes:
       - ./config/journalnode/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
       - ./config/journalnode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-    command: ["hdfs", "journalnode"]
+    command: ['hdfs', 'journalnode']
 
   zookeeper1:
-    image: sabaicode/zookeeper:latest
+    image: sabaicode/hadoop_zookeeper:latest
     container_name: zookeeper1
     networks:
       - bigdata_hadoop
     ports:
-      - "2181:2181"
+      - '2181:2181'
     volumes:
       - ./config/zookeeper/zoo.cfg/:/opt/zookeeper/conf/zoo.cfg
-    command: ["./bin/zkServer.sh", "start-foreground"]
+    command: ['./bin/zkServer.sh', 'start-foreground']
 
   zookeeper2:
-    image: sabaicode/zookeeper:latest
+    image: sabaicode/hadoop_zookeeper:latest
     container_name: zookeeper2
     networks:
       - bigdata_hadoop
     ports:
-      - "2182:2181"
+      - '2182:2181'
     volumes:
       - ./config/zookeeper/zoo.cfg/:/opt/zookeeper/conf/zoo.cfg
-    command: ["./bin/zkServer.sh", "start-foreground"]
+    command: ['./bin/zkServer.sh', 'start-foreground']
 
   zookeeper3:
-    image: sabaicode/zookeeper:latest
+    image: sabaicode/hadoop_zookeeper:latest
     container_name: zookeeper3
     networks:
       - bigdata_hadoop
     ports:
-      - "2183:2181"
+      - '2183:2181'
     volumes:
       - ./config/zookeeper/zoo.cfg/:/opt/zookeeper/conf/zoo.cfg
-    command: ["./bin/zkServer.sh", "start-foreground"]
+    command: ['./bin/zkServer.sh', 'start-foreground']
 
   datanode1:
     image: sabaicode/hadoop_datanode:latest

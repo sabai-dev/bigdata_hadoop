@@ -12,6 +12,7 @@
     "build:datanode": "docker build -f docker/datanode/Dockerfile -t sabaicode/hadoop_datanode:latest .",
     "build:sqoop": "docker build -f docker/sqoop/Dockerfile -t sabaicode/hadoop_sqoop:latest .",
     "build:flume": "docker build -f docker/flume/Dockerfile -t sabaicode/hadoop_flume:latest .",
+    "build:zookeeper": "docker build -f docker/zookeeper/Dockerfile -t sabaicode/hadoop_zookeeper:latest .",
     "clear-container": "docker rm -f $(docker ps -a -q)",
     "console": "docker-compose exec -u sabaicode namenode bash"
   },

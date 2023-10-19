@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=non-interactive
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y ssh wget openjdk-11-jdk && \
+    apt-get install -y ssh wget openjdk-11-jdk net-tools dnsutils vim && \
     apt-get clean
 
 # Set JAVA_HOME
@@ -20,6 +20,7 @@ RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.ta
 
 # Set Hadoop environment variables
 ENV HADOOP_USER sabaicode
+# ENV HDFS_NAMENODE_USER $HADOOP_USER
 ENV HADOOP_HOME=/opt/hadoop
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
