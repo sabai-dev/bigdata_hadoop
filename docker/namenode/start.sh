@@ -15,5 +15,3 @@ else
     echo "NameNode is already formatted."
     hdfs namenode
 fi
-
-chmod +x /fence.sh

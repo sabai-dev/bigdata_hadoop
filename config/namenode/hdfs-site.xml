@@ -110,7 +110,9 @@
    <!-- Specify the ZooKeeper quorum address for automatic failover -->
    <property>
      <name>dfs.ha.fencing.methods</name>
-     <value>shell(/fence.sh)</value>
+    <value>sshfence
+        shell(/bin/true)
+    </value>
    </property>
     <!-- Specify the ZooKeeper quorum address -->
     <property>

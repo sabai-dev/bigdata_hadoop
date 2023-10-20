@@ -19,17 +19,20 @@ services:
     networks:
       - bigdata_hadoop
     # In hadoop HA cluster we format only primary namenode data. The below Command should run in order
+
     # $hdfs namenode -format
+    
     # You should run this command only once. Running it on an already initialized shared edits directory may cause data loss.
     # $hdfs namenode -initializeSharedEdits
-    # Start first namenode it will set as default to standby
-    # $hdfs --daemon start namenode
+
     # Run on Active Namenode to Starting DFSZKFailoverController( is is run when initailize HA)
     # $hdfs zkfc -formatZK
 
     # Run all namenode ZKFC (ZooKeeper Failover Controller) daemon
     # $hdfs --daemon start zkfc
-    # command: ["hdfs", "--daemon", "start", "namenode"]
+
+    # Start first namenode it will set as default to standby
+    # $hdfs --daemon start namenode
     command: ['tail', '-f', '/dev/null']
 
   namenode2:
@@ -43,11 +46,14 @@ services:
       - ./config/namenode/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     networks:
       - bigdata_hadoop
-    # Run first time name start
+    # With Standby name node (namenode2) should run the below command in order
+    # 1. Run first time name start
     # $hdfs namenode -bootstrapStandby
-    # Run every time namenode2 start
-    # $hdfs --daemon start namenode
+    # 2. 
     # $hdfs --daemon start zkfc
+
+    # 3. Run everytime namenode2 start
+    # $hdfs --daemon start namenode
     command: ['tail', '-f', '/dev/null']
 
   journalnode1:
